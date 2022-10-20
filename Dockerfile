@@ -1,5 +1,5 @@
 # Base image
-FROM node:18
+FROM node:18-alpine
 
 # Create app directory
 WORKDIR /usr/src/app
@@ -19,3 +19,6 @@ RUN yarn build
 
 # Start the server using the production build
 CMD [ "node", "dist/main.js" ]
+
+# Add prod env variable
+ENV NODE_ENV production
