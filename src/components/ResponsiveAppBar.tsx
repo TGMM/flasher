@@ -12,8 +12,8 @@ import MenuItem from "@mui/material/MenuItem";
 import BoltIcon from "@mui/icons-material/Bolt";
 import { TypographyStyle } from "./ResponsiveAppBar.style";
 import FadeMenu from "./FadeMenu";
-import { Button } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
+import LoginRegisterButtons from "./LoginRegisterButtons";
 
 const subforums = ["Profile", "Account", "Dashboard", "Logout"];
 
@@ -113,19 +113,7 @@ function ResponsiveAppBar() {
                 </Menu>
               </>
             ) : (
-              <Box sx={{ flexGrow: 0, marginRight: "3rem" }}>
-                <Button component={RouterLink} to="/login" variant="outlined">
-                  Login
-                </Button>
-                <Button
-                  component={RouterLink}
-                  to="/register"
-                  variant="outlined"
-                  sx={{ marginLeft: "2rem" }}
-                >
-                  Register
-                </Button>
-              </Box>
+              <LoginRegisterButtons />
             )}
           </>
         </Toolbar>

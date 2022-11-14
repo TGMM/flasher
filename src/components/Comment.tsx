@@ -1,4 +1,4 @@
-import { Box, Button, Card, SxProps, Theme, Typography } from "@mui/material";
+import { Box, Button, Card, Typography } from "@mui/material";
 import { CommentIcon } from "./CustomIcons";
 import { fontFamily } from "./Global.style";
 import UpvoteBar from "./UpvoteBar";
@@ -6,31 +6,24 @@ import { Link as RouterLink } from "react-router-dom";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 
-export interface PostInfo {
-  subforum: string;
+export interface CommentInfo {
   author: string;
   createdAt: dayjs.Dayjs;
-  title: string;
   body: string;
-  numComments: number;
 }
 
-interface PostProps {
-  postInfo: PostInfo;
-  sx?: SxProps<Theme>;
+interface CommentProps {
+  commentInfo: CommentInfo;
 }
 
-function Post(props: PostProps) {
+function Comment(props: CommentProps) {
   dayjs.extend(relativeTime);
-  const { body, subforum, author, title, createdAt, numComments } =
-    props.postInfo;
-  const extraSx = props.sx;
+  const { body, author, createdAt } = props.commentInfo;
 
   return (
     <Card
       sx={{
         width: "100%",
-        ...extraSx,
       }}
     >
       <Box
@@ -48,18 +41,7 @@ function Post(props: PostProps) {
               fontFamily: fontFamily,
             }}
           >
-            {`${subforum} Posted by ${author} ${createdAt.fromNow()}`}
-          </Typography>
-          <Typography
-            sx={{
-              fontFamily: fontFamily,
-              fontWeight: 500,
-              fontSize: "1.5rem",
-              marginBottom: "1rem",
-            }}
-            variant="h5"
-          >
-            {title}
+            {`${author} ${createdAt.fromNow()}`}
           </Typography>
           <Typography
             sx={{
@@ -86,9 +68,9 @@ function Post(props: PostProps) {
                 textDecoration: "none",
               }}
               component={RouterLink}
-              to={`/${subforum}/comments/${1}`}
+              to={`/`}
             >
-              {`${numComments} comments`}
+              Reply
             </Typography>
           </Button>
         </Box>
@@ -97,4 +79,4 @@ function Post(props: PostProps) {
   );
 }
 
-export default Post;
+export default Comment;

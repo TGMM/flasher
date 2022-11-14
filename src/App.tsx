@@ -8,6 +8,7 @@ import Register from "./components/Register";
 import Home from "./components/Home";
 import { Box } from "@mui/system";
 import PostList from "./components/PostList";
+import CommentPage from "./components/CommentPage";
 
 const darkTheme = createTheme({
   palette: {
@@ -28,7 +29,10 @@ function App() {
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="/r/:subforum" element={<PostList />} />
-              <Route path="/r/:subforum/comments/:id" element={<Home />} />
+              <Route
+                path="/r/:subforum/comments/:id"
+                element={<CommentPage />}
+              />
             </Routes>
           </Box>
         </Box>
