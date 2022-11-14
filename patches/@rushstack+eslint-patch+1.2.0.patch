@@ -1,0 +1,40 @@
+diff --git a/node_modules/@rushstack/eslint-patch/lib/modern-module-resolution.js b/node_modules/@rushstack/eslint-patch/lib/modern-module-resolution.js
+index a163313..d4c9c36 100644
+--- a/node_modules/@rushstack/eslint-patch/lib/modern-module-resolution.js
++++ b/node_modules/@rushstack/eslint-patch/lib/modern-module-resolution.js
+@@ -23,7 +23,7 @@ let moduleResolverPath = undefined;
+ // Example: ".../node_modules/eslint"
+ let eslintFolder = undefined;
+ // Probe for the ESLint >=8.0.0 layout:
+-for (let currentModule = module;;) {
++for (let currentModule = module; ;) {
+     if (!eslintrcBundlePath) {
+         // For ESLint >=8.0.0, all @eslint/eslintrc code is bundled at this path:
+         //   .../@eslint/eslintrc/dist/eslintrc.cjs
+@@ -74,7 +74,7 @@ for (let currentModule = module;;) {
+ }
+ if (!eslintFolder) {
+     // Probe for the ESLint >=7.8.0 layout:
+-    for (let currentModule = module;;) {
++    for (let currentModule = module; ;) {
+         if (!configArrayFactoryPath) {
+             // For ESLint >=7.8.0, config-array-factory.js is at this path:
+             //   .../@eslint/eslintrc/lib/config-array-factory.js
+@@ -125,7 +125,7 @@ if (!eslintFolder) {
+ }
+ if (!eslintFolder) {
+     // Probe for the <7.8.0 layout:
+-    for (let currentModule = module;;) {
++    for (let currentModule = module; ;) {
+         // For ESLint <7.8.0, config-array-factory.js was at this path:
+         //   .../eslint/lib/cli-engine/config-array-factory.js
+         if (/[\\/]eslint[\\/]lib[\\/]cli-engine[\\/]config-array-factory\.js$/i.test(currentModule.filename)) {
+@@ -211,7 +211,7 @@ if (!ConfigArrayFactory.__patched) {
+                     }
+                     catch (e) {
+                         if (isModuleResolutionError(e)) {
+-                            return originalResolve.call(this, moduleName, relativeToPath);
++                            return originalResolve.call(this, moduleName, relativeToPath || relativeToPath);
+                         }
+                         throw e;
+                     }
