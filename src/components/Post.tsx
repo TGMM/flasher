@@ -8,11 +8,11 @@ import relativeTime from "dayjs/plugin/relativeTime";
 
 export interface PostInfo {
   subforum: string;
-  user: string;
+  author: string;
+  createdAt: dayjs.Dayjs;
   title: string;
-  content: string;
-  date: dayjs.Dayjs;
-  commentCount: number;
+  body: string;
+  numComments: number;
 }
 
 interface PostProps {
@@ -21,7 +21,8 @@ interface PostProps {
 
 function Post(props: PostProps) {
   dayjs.extend(relativeTime);
-  const { content, subforum, user, title, date, commentCount } = props.postInfo;
+  const { body, subforum, author, title, createdAt, numComments } =
+    props.postInfo;
 
   return (
     <Card
@@ -44,7 +45,7 @@ function Post(props: PostProps) {
               fontFamily: fontFamily,
             }}
           >
-            {`${subforum} Posted by ${user} ${date.fromNow()}`}
+            {`${subforum} Posted by ${author} ${createdAt.fromNow()}`}
           </Typography>
           <Typography
             sx={{
@@ -64,7 +65,7 @@ function Post(props: PostProps) {
               marginBottom: "1rem",
             }}
           >
-            {content}
+            {body}
           </Typography>
           <Button>
             <CommentIcon
@@ -84,7 +85,7 @@ function Post(props: PostProps) {
               component={RouterLink}
               to="/"
             >
-              {`${commentCount} comments`}
+              {`${numComments} comments`}
             </Typography>
           </Button>
         </Box>

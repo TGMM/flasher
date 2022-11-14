@@ -28,6 +28,7 @@ function App() {
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="/r/:subforum" element={<PostList />} />
+              <Route path="/r/:subforum/comments/:id" element={<Home />} />
             </Routes>
           </Box>
         </Box>

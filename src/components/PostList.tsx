@@ -19,11 +19,10 @@ function PostList() {
   const templatePostInfo: PostInfo = {
     subforum: `r/${subforum ?? "test"}`,
     title: "Super fun post",
-    content:
-      "This post is so fun to read, it has many words and it says a ton of stuff",
-    user: "noobmaster69",
-    date: dayjs(rDate),
-    commentCount: Math.ceil(Math.random() * 75),
+    body: "This post is so fun to read, it has many words and it says a ton of stuff",
+    author: "noobmaster69",
+    createdAt: dayjs(rDate),
+    numComments: Math.ceil(Math.random() * 75),
   };
 
   return (
