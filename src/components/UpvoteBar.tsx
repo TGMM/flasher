@@ -1,11 +1,7 @@
 import Typography from "@mui/material/Typography";
 import { DownvoteIcon, UpvoteIcon } from "./CustomIcons";
 import { orange, blue } from "@mui/material/colors";
-import {
-  fontSizeControlClass,
-  HoverArrow,
-  WrapperDiv,
-} from "./UpvoteBar.style";
+import { HoverArrow, UpvoteCount, WrapperDiv } from "./UpvoteBar.style";
 
 function UpvoteBar() {
   const upvoteColor = orange[500];
@@ -13,13 +9,9 @@ function UpvoteBar() {
 
   return (
     <div className={WrapperDiv}>
-      <UpvoteIcon
-        className={`${HoverArrow(upvoteColor)} ${fontSizeControlClass}`}
-      />
-      <Typography className={fontSizeControlClass}>80</Typography>
-      <DownvoteIcon
-        className={`${HoverArrow(downvoteColor)} ${fontSizeControlClass}`}
-      />
+      <UpvoteIcon className={`${HoverArrow(upvoteColor)}`} />
+      <Typography className={`${UpvoteCount}`}>80</Typography>
+      <DownvoteIcon className={`${HoverArrow(downvoteColor)}`} />
     </div>
   );
 }
