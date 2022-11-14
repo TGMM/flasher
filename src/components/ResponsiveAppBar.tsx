@@ -15,7 +15,7 @@ import FadeMenu from "./FadeMenu";
 import { Button } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
 
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+const subforums = ["Profile", "Account", "Dashboard", "Logout"];
 
 function ResponsiveAppBar() {
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
@@ -105,7 +105,7 @@ function ResponsiveAppBar() {
                   open={Boolean(anchorElUser)}
                   onClose={handleCloseUserMenu}
                 >
-                  {settings.map((setting) => (
+                  {subforums.map((setting) => (
                     <MenuItem key={setting} onClick={handleCloseUserMenu}>
                       <Typography textAlign="center">{setting}</Typography>
                     </MenuItem>

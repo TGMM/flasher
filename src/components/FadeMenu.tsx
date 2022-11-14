@@ -5,14 +5,19 @@ import MenuItem from "@mui/material/MenuItem";
 import Fade from "@mui/material/Fade";
 import { Divider, Typography } from "@mui/material";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import { useNavigate } from "react-router-dom";
 
 export default function FadeMenu() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
+  const navigate = useNavigate();
+
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
-  const handleClose = () => {
+  const handleClose = (event: React.MouseEvent<HTMLElement>) => {
+    const { subforum } = event.currentTarget.dataset;
+    navigate(`/${subforum}`);
     setAnchorEl(null);
   };
 
@@ -29,7 +34,7 @@ export default function FadeMenu() {
         aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
       >
-        <Typography>Home</Typography>
+        <Typography sx={{ textTransform: "none" }}>Home</Typography>
         <ArrowDropDownIcon></ArrowDropDownIcon>
       </Button>
       <Menu
@@ -46,7 +51,7 @@ export default function FadeMenu() {
         <MenuItem onClick={handleClose}>Home</MenuItem>
         <Divider />
         {menuItems.map((item) => (
-          <MenuItem key={item} onClick={handleClose}>
+          <MenuItem key={item} data-subforum={item} onClick={handleClose}>
             {item}
           </MenuItem>
         ))}

@@ -1,9 +1,11 @@
 import { Box, Typography } from "@mui/material";
+import { useParams } from "react-router-dom";
 import { fontFamily } from "./Global.style";
 import Post from "./Post";
 
 function PostList() {
   const posts = [0];
+  const { subforum } = useParams();
 
   return (
     <Box display="flex" flexDirection="column">
@@ -16,10 +18,10 @@ function PostList() {
         }}
         variant="h4"
       >
-        Home
+        {subforum ? `r/${subforum}` : "Home"}
       </Typography>
       {posts.map((p) => (
-        <Post></Post>
+        <Post key={p}></Post>
       ))}
     </Box>
   );

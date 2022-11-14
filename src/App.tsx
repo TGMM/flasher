@@ -7,6 +7,7 @@ import Login from "./components/Login";
 import Register from "./components/Register";
 import Home from "./components/Home";
 import { Box } from "@mui/system";
+import PostList from "./components/PostList";
 
 const darkTheme = createTheme({
   palette: {
@@ -26,6 +27,7 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
+              <Route path="/r/:subforum" element={<PostList />} />
             </Routes>
           </Box>
         </Box>
