@@ -1,11 +1,30 @@
 import { Box, Typography } from "@mui/material";
 import { useParams } from "react-router-dom";
 import { fontFamily } from "./Global.style";
-import Post from "./Post";
+import Post, { PostInfo } from "./Post";
+import dayjs from "dayjs";
 
 function PostList() {
   const posts = [0];
   const { subforum } = useParams();
+
+  function randomDate(start: Date, end: Date) {
+    return new Date(
+      start.getTime() + Math.random() * (end.getTime() - start.getTime())
+    );
+  }
+
+  const rDate = randomDate(new Date(2012, 0, 1), new Date());
+
+  const templatePostInfo: PostInfo = {
+    subforum: `r/${subforum ?? "test"}`,
+    title: "Super fun post",
+    content:
+      "This post is so fun to read, it has many words and it says a ton of stuff",
+    user: "noobmaster69",
+    date: dayjs(rDate),
+    commentCount: Math.ceil(Math.random() * 75),
+  };
 
   return (
     <Box display="flex" flexDirection="column">
@@ -21,7 +40,7 @@ function PostList() {
         {subforum ? `r/${subforum}` : "Home"}
       </Typography>
       {posts.map((p) => (
-        <Post key={p}></Post>
+        <Post postInfo={templatePostInfo} key={p} />
       ))}
     </Box>
   );

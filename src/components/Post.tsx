@@ -2,8 +2,27 @@ import { Box, Button, Card, Typography } from "@mui/material";
 import { CommentIcon } from "./CustomIcons";
 import { fontFamily } from "./Global.style";
 import UpvoteBar from "./UpvoteBar";
+import { Link as RouterLink } from "react-router-dom";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
 
-function Post() {
+export interface PostInfo {
+  subforum: string;
+  user: string;
+  title: string;
+  content: string;
+  date: dayjs.Dayjs;
+  commentCount: number;
+}
+
+interface PostProps {
+  postInfo: PostInfo;
+}
+
+function Post(props: PostProps) {
+  dayjs.extend(relativeTime);
+  const { content, subforum, user, title, date, commentCount } = props.postInfo;
+
   return (
     <Card
       sx={{
@@ -25,7 +44,7 @@ function Post() {
               fontFamily: fontFamily,
             }}
           >
-            r/videos Posted by u/joao a year ago
+            {`${subforum} Posted by ${user} ${date.fromNow()}`}
           </Typography>
           <Typography
             sx={{
@@ -36,7 +55,7 @@ function Post() {
             }}
             variant="h5"
           >
-            Post Title
+            {title}
           </Typography>
           <Typography
             sx={{
@@ -45,8 +64,7 @@ function Post() {
               marginBottom: "1rem",
             }}
           >
-            This is the content of a very long post just to test how it would
-            look like
+            {content}
           </Typography>
           <Button>
             <CommentIcon
@@ -60,9 +78,13 @@ function Post() {
                 fontFamily: fontFamily,
                 fontSize: "1rem",
                 textTransform: "none",
+                color: "inherit",
+                textDecoration: "none",
               }}
+              component={RouterLink}
+              to="/"
             >
-              10 comments
+              {`${commentCount} comments`}
             </Typography>
           </Button>
         </Box>

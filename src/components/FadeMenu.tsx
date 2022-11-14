@@ -48,7 +48,9 @@ export default function FadeMenu() {
         TransitionComponent={Fade}
         elevation={0}
       >
-        <MenuItem onClick={handleClose}>Home</MenuItem>
+        <MenuItem onClick={handleClose} data-subforum={""}>
+          Home
+        </MenuItem>
         <Divider />
         {menuItems.map((item) => (
           <MenuItem key={item} data-subforum={item} onClick={handleClose}>
