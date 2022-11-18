@@ -54,11 +54,9 @@ export class ForumPostContoller {
           return;
         }
 
-        if (Array.isArray(filterValue)) {
-          filterValue.forEach((val) => queryArgs.push(val));
-        } else {
-          queryArgs.push(filterValue);
-        }
+        Array.isArray(filterValue)
+          ? queryArgs.push(...filterValue)
+          : queryArgs.push(filterValue);
 
         havingAndClause.push(
           `${columnNamesEnum[filterName as 'subreddit' | 'author']} = $${
