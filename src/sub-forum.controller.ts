@@ -1,4 +1,4 @@
-import { Controller, Delete, Get, Post, Req, Res } from '@nestjs/common';
+import { Controller, Get, Post, Req, Res } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { query } from './db';
 import { Subforum } from './db/db';
