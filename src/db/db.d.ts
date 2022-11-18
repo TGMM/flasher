@@ -30,3 +30,15 @@ export interface ForumPost {
   created_at: Date;
   updated_at: Date;
 }
+
+export interface Comment {
+  id: number;
+  body: string;
+  author_id: number;
+  post_id: number;
+  parent_comment_id: number;
+  created_at: Date;
+  updated_at: Date;
+  // TODO: Check this
+  subforum_name: string;
+}
