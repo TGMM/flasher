@@ -4,10 +4,13 @@ import jwt from 'jsonwebtoken';
 import { User } from 'src/db/db';
 import { query } from '../db';
 
-export interface AuthRequest extends Request {
+export interface AuthProps {
   user: User;
   token: string;
 }
+
+export interface AuthRequest extends Request, AuthProps {}
+export interface OptionalAuthRequest extends Request, Partial<AuthProps> {}
 
 export function AuthMiddlewareCreator(optional = false): Type<NestMiddleware> {
   @Injectable()

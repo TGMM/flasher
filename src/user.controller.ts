@@ -16,7 +16,7 @@ import bcrypt from 'bcrypt';
 import { User } from './db/db';
 import _ from 'lodash';
 import { updateTableRow } from './db/utils';
-import { AuthRequest } from './middleware/auth';
+import { AuthRequest, OptionalAuthRequest } from './middleware/auth';
 
 @Controller({
   path: 'users',
@@ -202,7 +202,7 @@ export class UserController {
   }
 
   @Post('logout')
-  async logout(@Req() req: Partial<AuthRequest>, @Res() res: Response) {
+  async logout(@Req() req: OptionalAuthRequest, @Res() res: Response) {
     const tokens = req.user?.tokens?.filter((token) => token !== req.token);
     const setUserTokensStatement = `
       update users
@@ -220,7 +220,7 @@ export class UserController {
   }
 
   @Post('logoutAll')
-  async logoutAll(@Req() req: Partial<AuthRequest>, @Res() res: Response) {
+  async logoutAll(@Req() req: OptionalAuthRequest, @Res() res: Response) {
     const clearUserTokensStatement = `
     update users
     set tokens = '{}'
