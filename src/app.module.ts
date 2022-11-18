@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { AuthMiddleware } from './middleware/auth';
+import { AuthMiddlewareCreator } from './middleware/auth';
 import { UserController } from './user.controller';
 
 @Module({
@@ -17,7 +17,7 @@ import { UserController } from './user.controller';
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
-      .apply(AuthMiddleware)
+      .apply(AuthMiddlewareCreator())
       .forRoutes(
         { path: 'users', method: RequestMethod.PATCH },
         { path: 'users', method: RequestMethod.DELETE },
