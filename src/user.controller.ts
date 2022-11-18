@@ -163,4 +163,74 @@ export class UserController {
       res.status(400).send({ error: e.message });
     }
   }
+
+  // #region Login
+
+  @Post('/login')
+  async login(@Req() req: Request, @Res() res: Response) {
+    try {
+      const { username, password } = req.body;
+      if (!username || !password) {
+        throw new Error('Username and password are required');
+      }
+
+      const selectUserStatement = `select * from users where username = $1`;
+
+      const rows = await query<User>(selectUserStatement, [username]);
+      const failedLoginError = { error: 'Username or password was incorrect' };
+
+      if (!rows[0]) {
+        return res.status(401).send(failedLoginError);
+      }
+
+      const isMatch = await bcrypt.compare(password, rows[0].password);
+      if (!isMatch) {
+        return res.status(401).send(failedLoginError);
+      }
+
+      const { user, token } = await UserController.addToken(
+        rows[0].id.toString(),
+      );
+
+      res.send({
+        user: UserController.getPublicUser(user),
+        token,
+      });
+    } catch (e) {
+      res.status(400).send({ error: e.message });
+    }
+  }
+
+  @Post('logout')
+  async logout(@Req() req: Partial<AuthRequest>, @Res() res: Response) {
+    const tokens = req.user?.tokens?.filter((token) => token !== req.token);
+    const setUserTokensStatement = `
+      update users
+      set tokens = $1
+      where id = $2
+    `;
+    const [user] = await query<User>(setUserTokensStatement, [
+      tokens,
+      req.user?.id,
+    ]);
+
+    delete req.user;
+    delete req.token;
+    res.send(user);
+  }
+
+  @Post('logoutAll')
+  async logoutAll(@Req() req: Partial<AuthRequest>, @Res() res: Response) {
+    const clearUserTokensStatement = `
+    update users
+    set tokens = '{}'
+    where id = $1
+  `;
+    const [user] = await query(clearUserTokensStatement, [req.user?.id]);
+    delete req.user;
+    delete req.token;
+    res.send(user);
+  }
+
+  // #endregion Login
 }
