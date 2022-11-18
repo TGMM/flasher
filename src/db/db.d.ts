@@ -42,3 +42,9 @@ export interface Comment {
   // TODO: Check this
   subforum_name: string;
 }
+
+export interface Vote {
+  user_id: number;
+  post_id: number;
+  vote_value: number;
+}
