@@ -1,16 +1,16 @@
 import { Moderator } from './db';
 import { query } from './index';
 
-export const updateTableRow = async <T extends Record<string, unknown>>(
+export const updateTableRow = async <T>(
   table: string,
   id: number,
   allowedUpdates: string[],
   updatesObj: T,
-) => {
+): Promise<T> => {
   if (allowedUpdates.length < 1) {
     throw new Error('No updates allowed');
   }
-  const updateFields = Object.keys(updatesObj);
+  const updateFields = Object.keys(updatesObj as Record<string, unknown>);
   const validUpdate = updateFields.every((updateField) =>
     allowedUpdates.includes(updateField),
   );
@@ -33,7 +33,9 @@ export const updateTableRow = async <T extends Record<string, unknown>>(
 
   const updateFieldsParams: unknown[] = [];
   updateFields.forEach((updateField) => {
-    updateFieldsParams.push(updatesObj[updateField]);
+    updateFieldsParams.push(
+      (updatesObj as Record<string, unknown>)[updateField],
+    );
   });
 
   const updateTableStatement = `
@@ -43,10 +45,11 @@ export const updateTableRow = async <T extends Record<string, unknown>>(
   returning *
 `;
 
-  const [updatedRow] = await query(updateTableStatement, [
+  const [updatedRow] = await query<T>(updateTableStatement, [
     ...updateFieldsParams,
     id,
   ]);
+
   return updatedRow;
 };
 
