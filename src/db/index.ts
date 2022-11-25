@@ -1,4 +1,5 @@
-import pgPromise, { ParameterizedQuery as PQ } from 'pg-promise';
+import { ParameterizedQuery as PQ } from 'pg-promise';
+import * as pgPromise from 'pg-promise';
 import pg from 'pg-promise/typescript/pg-subset';
 
 const devConfig: pg.IConnectionParameters<pg.IClient> = {
