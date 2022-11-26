@@ -1,12 +1,30 @@
 import { Box, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useHttpRequest } from "../fetchUtils";
 import { templatePostInfo } from "../mockUtils";
 import { fontFamily } from "./Global.style";
 import Post from "./Post";
 
 function PostList() {
-  const posts = [0];
   const { subforum } = useParams();
+
+  const httpRequest = useHttpRequest(false);
+  const [posts, setPosts] = useState<any[]>([]);
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      const fetchPostsResponse = await httpRequest("/posts", "GET");
+
+      if (fetchPostsResponse.ok) {
+        const fetchedPosts = await fetchPostsResponse.json();
+        console.log(fetchPosts);
+        setPosts(fetchedPosts);
+      }
+    };
+
+    fetchPosts();
+  }, [httpRequest]);
 
   return (
     <Box display="flex" flexDirection="column">

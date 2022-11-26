@@ -15,19 +15,14 @@ import FadeMenu from "./FadeMenu";
 import { Link as RouterLink } from "react-router-dom";
 import LoginRegisterButtons from "./LoginRegisterButtons";
 import useSessionStorageState from "use-session-storage-state";
+import { AuthToken, AuthUser, useHttpRequest } from "../fetchUtils";
 
 function ResponsiveAppBar() {
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
-  const [token, setToken] = useSessionStorageState<string | undefined>("token");
-  const [user, setUser] = useSessionStorageState<
-    | {
-        id: number;
-        username: string;
-        created_at: Date;
-        updated_at: Date;
-      }
-    | undefined
-  >("user");
+  const [, setToken] = useSessionStorageState<AuthToken>("token");
+  const [user, setUser] = useSessionStorageState<AuthUser>("user");
+
+  const httpRequest = useHttpRequest();
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
@@ -43,17 +38,7 @@ function ResponsiveAppBar() {
     }
 
     try {
-      await fetch(`${backendUrl}/users/logout`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          user: {
-            tokens: [token],
-          },
-        }),
-      });
+      await httpRequest("/users/logout", "POST");
     } catch (error) {
       console.error(error);
     }

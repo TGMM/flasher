@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Req, Res } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { query } from './db';
-import { Subforum } from './db/db';
+import { Subforum } from '../../db';
 import { AuthRequest } from './middleware/auth';
 
 @Controller({
@@ -11,7 +11,7 @@ export class SubForumController {
   @Get()
   async getForums(@Res() res: Response) {
     try {
-      const selectSubforumsStatement = `select * from subforums`;
+      const selectSubforumsStatement = `select * from subreddits`;
       const rows = await query<Subforum>(selectSubforumsStatement);
       res.send(rows);
     } catch (e) {
@@ -23,7 +23,7 @@ export class SubForumController {
   async getForum(@Req() req: Request, @Res() res: Response) {
     try {
       const { name } = req.params;
-      const selectSubforumStatement = `select * from subforums where name = $1`;
+      const selectSubforumStatement = `select * from subreddits where name = $1`;
       const [subforum] = await query<Subforum>(selectSubforumStatement, [name]);
 
       if (!subforum) {
@@ -52,7 +52,7 @@ export class SubForumController {
       }
 
       const insertSubforumStatement = `
-        insert into subforums(name, description)
+        insert into subreddits(name, description)
         values($1, $2)
         returning *
       `;
@@ -70,7 +70,7 @@ export class SubForumController {
       }
 
       const insertModeratorStatement = `
-        insert into moderators(user_id, subforum_id)
+        insert into moderators(user_id, subreddit_id)
         values($1, $2)
       `;
 

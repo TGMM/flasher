@@ -26,7 +26,7 @@ export interface ForumPost {
   title: string;
   body: string;
   author_id: number;
-  subforum_id: number;
+  subreddit_id: number;
   created_at: Date;
   updated_at: Date;
 }

@@ -1,7 +1,7 @@
 import { Injectable, mixin, NestMiddleware, Type } from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
-import jwt from 'jsonwebtoken';
-import { User } from 'src/db/db';
+import * as jwt from 'jsonwebtoken';
+import { User } from '../../../db';
 import { query } from '../db';
 import * as dotenv from 'dotenv';
 
@@ -25,7 +25,7 @@ export function AuthMiddlewareCreator(optional = false): Type<NestMiddleware> {
           throw new Error();
         }
 
-        const token = authorizationHeader.replace('Bearer ', '');
+        const token = authorizationHeader.replace('Bearer ', '').trim();
         const jwtPayload = jwt.verify(token, process.env.JWT_SECRET!);
         const id = (jwtPayload as jwt.JwtPayload).id;
 
@@ -39,8 +39,9 @@ export function AuthMiddlewareCreator(optional = false): Type<NestMiddleware> {
         req.user = user;
         req.token = token;
       } catch (e) {
+        console.error(e);
         if (!optional) {
-          return res.status(401).send({ error: 'Please authenticate' });
+          return res.status(401).send({ error: `Please authenticate, ${e}` });
         }
       }
       next();

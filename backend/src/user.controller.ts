@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { query } from './db';
-import { User } from './db/db';
+import { User } from '../../db';
 import _ from 'lodash';
 import { updateTableRow } from './db/utils';
 import { AuthRequest, OptionalAuthRequest } from './middleware/auth';

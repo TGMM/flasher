@@ -3,7 +3,7 @@ import { Response } from 'express';
 import { query } from './db';
 import { AuthRequest, OptionalAuthRequest } from './middleware/auth';
 import type { ParsedQs } from 'qs';
-import { ForumPost, Subforum } from './db/db';
+import { ForumPost, Subforum } from '../../db';
 import { updateTableRow } from './db/utils';
 
 @Controller({
@@ -107,7 +107,7 @@ export class ForumPostContoller {
   @Post()
   async createForumPost(@Req() req: AuthRequest, @Res() res: Response) {
     try {
-      const { type, title, body, subreddit } = req.body;
+      const { type, title, body, subforum } = req.body;
       if (!type) {
         throw new Error('Must specify post type');
       }
@@ -117,19 +117,19 @@ export class ForumPostContoller {
       if (type === 'link' && !body) {
         throw new Error('Must specify link post URL');
       }
-      if (!subreddit) {
-        throw new Error('Must specify subreddit');
+      if (!subforum) {
+        throw new Error('Must specify subforum');
       }
 
-      const selectSubredditIdStatement = `select * from subreddits where name = $1`;
+      const selectSubredditIdStatement = `select * from subforums where name = $1`;
 
       const [foundSubreddit] = await query<Subforum>(
         selectSubredditIdStatement,
-        [subreddit],
+        [subforum],
       );
 
       if (!foundSubreddit) {
-        throw new Error('Subreddit does not exist');
+        throw new Error('Subforum does not exist');
       }
 
       const createPostStatement = `

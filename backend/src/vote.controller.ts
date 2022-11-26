@@ -2,7 +2,7 @@ import { Controller, Get, Post, Req, Res } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { query } from './db';
 import { AuthRequest } from './middleware/auth';
-import { Vote } from './db/db';
+import { Vote } from '../../db';
 
 @Controller({
   path: 'votes',

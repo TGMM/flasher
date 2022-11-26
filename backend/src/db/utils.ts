@@ -1,4 +1,4 @@
-import { Moderator } from './db';
+import { Moderator } from '../../../db';
 import { query } from './index';
 
 export const updateTableRow = async <T>(

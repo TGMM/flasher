@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 import { query } from './db';
 import { AuthRequest } from './middleware/auth';
 import type { ParsedQs } from 'qs';
-import { Moderator } from './db/db';
+import { Moderator } from '../../db';
 import { selectModeratorsStatement, userIsModerator } from './db/utils';
 
 @Controller({

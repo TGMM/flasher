@@ -6,12 +6,25 @@ import {
 } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { CommentController } from './comment.controller';
+import { ForumPostContoller } from './forum-post.controller';
 import { AuthMiddlewareCreator } from './middleware/auth';
+import { ModeratorController } from './moderator.controller';
+import { SubForumController } from './sub-forum.controller';
 import { UserController } from './user.controller';
+import { VoteController } from './vote.controller';
 
 @Module({
   imports: [],
-  controllers: [AppController, UserController],
+  controllers: [
+    AppController,
+    UserController,
+    CommentController,
+    ForumPostContoller,
+    SubForumController,
+    ModeratorController,
+    VoteController,
+  ],
   providers: [AppService],
 })
 export class AppModule implements NestModule {
@@ -31,12 +44,12 @@ export class AppModule implements NestModule {
         { path: 'votes/:voteType', method: RequestMethod.POST },
         { path: 'moderators', method: RequestMethod.POST },
         { path: 'moderators', method: RequestMethod.DELETE },
+        'users/logout',
+        'users/logoutAll',
       );
     consumer
       .apply(AuthMiddlewareCreator(true))
       .forRoutes(
-        'users/logout',
-        'users/logoutAll',
         { path: 'posts', method: RequestMethod.GET },
         { path: 'posts/:id', method: RequestMethod.GET },
         { path: 'posts/:post_id', method: RequestMethod.GET },

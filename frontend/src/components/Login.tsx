@@ -3,6 +3,7 @@ import { css } from "@emotion/css";
 import { Button, SxProps, TextField, Theme } from "@mui/material/";
 import { useNavigate } from "react-router-dom";
 import useSessionStorageState from "use-session-storage-state";
+import { AuthToken, AuthUser, useHttpRequest } from "../fetchUtils";
 
 function Login() {
   const marginStyle: SxProps<Theme> = {
@@ -10,20 +11,13 @@ function Login() {
   };
 
   const navigate = useNavigate();
+  const httpRequest = useHttpRequest(false);
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const [, setToken] = useSessionStorageState<string | undefined>("token");
-  const [, setUser] = useSessionStorageState<
-    | {
-        id: number;
-        username: string;
-        created_at: Date;
-        updated_at: Date;
-      }
-    | undefined
-  >("user");
+  const [, setToken] = useSessionStorageState<AuthToken>("token");
+  const [, setUser] = useSessionStorageState<AuthUser>("user");
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -36,15 +30,9 @@ function Login() {
     }
 
     try {
-      const loginResponse = await fetch(`${backendUrl}/users/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          username,
-          password,
-        }),
+      const loginResponse = await httpRequest("/users/login", "POST", {
+        username,
+        password,
       });
 
       if (loginResponse.ok) {

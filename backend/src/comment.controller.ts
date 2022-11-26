@@ -1,7 +1,7 @@
 import { Controller, Delete, Get, Post, Req, Res, Put } from '@nestjs/common';
 import { Response } from 'express';
 import { query } from './db';
-import { ForumPost, Comment } from './db/db';
+import { ForumPost, Comment } from '../../db';
 import { updateTableRow, userIsModerator } from './db/utils';
 import { AuthRequest, OptionalAuthRequest } from './middleware/auth';
 
