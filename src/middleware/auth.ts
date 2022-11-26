@@ -3,6 +3,9 @@ import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import { User } from 'src/db/db';
 import { query } from '../db';
+import * as dotenv from 'dotenv';
+
+dotenv.config();
 
 export interface AuthProps {
   user: User;

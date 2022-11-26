@@ -17,6 +17,9 @@ import { User } from './db/db';
 import _ from 'lodash';
 import { updateTableRow } from './db/utils';
 import { AuthRequest, OptionalAuthRequest } from './middleware/auth';
+import * as dotenv from 'dotenv';
+
+dotenv.config();
 
 @Controller({
   path: 'users',
