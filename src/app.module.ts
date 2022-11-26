@@ -24,6 +24,23 @@ export class AppModule implements NestModule {
         'users/login',
         'users/logout',
         'users/logoutAll',
+        { path: 'posts', method: RequestMethod.POST },
+        { path: 'posts/:id', method: RequestMethod.PATCH },
+        { path: 'posts', method: RequestMethod.DELETE },
+        { path: 'subforums', method: RequestMethod.POST },
+        { path: 'comments', method: RequestMethod.POST },
+        { path: 'comments/:id', method: RequestMethod.PUT },
+        { path: 'comments', method: RequestMethod.DELETE },
+        { path: 'votes/:voteType', method: RequestMethod.POST },
+        { path: 'moderators', method: RequestMethod.POST },
+        { path: 'moderators', method: RequestMethod.DELETE },
+      );
+    consumer
+      .apply(AuthMiddlewareCreator(true))
+      .forRoutes(
+        { path: 'posts', method: RequestMethod.GET },
+        { path: 'posts/:id', method: RequestMethod.GET },
+        { path: 'posts/:post_id', method: RequestMethod.GET },
       );
   }
 }

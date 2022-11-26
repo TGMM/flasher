@@ -6,7 +6,9 @@ import type { ParsedQs } from 'qs';
 import { Moderator } from './db/db';
 import { selectModeratorsStatement, userIsModerator } from './db/utils';
 
-@Controller()
+@Controller({
+  path: 'moderators',
+})
 export class ModeratorController {
   @Get()
   async getModerators(@Req() req: Request, @Res() res: Response) {

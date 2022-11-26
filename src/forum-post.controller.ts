@@ -6,7 +6,9 @@ import type { ParsedQs } from 'qs';
 import { ForumPost, Subforum } from './db/db';
 import { updateTableRow } from './db/utils';
 
-@Controller()
+@Controller({
+  path: 'posts',
+})
 export class ForumPostContoller {
   static selectPostStatement = `
     select
@@ -196,7 +198,7 @@ export class ForumPostContoller {
     }
   }
 
-  @Delete()
+  @Delete('/:id')
   async deleteForumPost(@Req() req: AuthRequest, @Res() res: Response) {
     try {
       const { id } = req.params;

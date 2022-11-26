@@ -4,7 +4,9 @@ import { query } from './db';
 import { Subforum } from './db/db';
 import { AuthRequest } from './middleware/auth';
 
-@Controller()
+@Controller({
+  path: 'subforums',
+})
 export class SubForumController {
   @Get()
   async getForums(@Res() res: Response) {

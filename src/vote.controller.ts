@@ -4,7 +4,9 @@ import { query } from './db';
 import { AuthRequest } from './middleware/auth';
 import { Vote } from './db/db';
 
-@Controller()
+@Controller({
+  path: 'votes',
+})
 export class VoteController {
   static checkVoteType = (voteType: string) => {
     const types = ['post', 'comment'];

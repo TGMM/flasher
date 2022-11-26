@@ -5,7 +5,9 @@ import { ForumPost, Comment } from './db/db';
 import { updateTableRow, userIsModerator } from './db/utils';
 import { AuthRequest, OptionalAuthRequest } from './middleware/auth';
 
-@Controller()
+@Controller({
+  path: 'comments',
+})
 export class CommentController {
   static selectCommentStatement = `
     select c.id, c.author_id, c.post_id, c.parent_comment_id, sr.name subforum_name
