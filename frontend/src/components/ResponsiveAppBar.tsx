@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -14,20 +14,52 @@ import { TypographyStyle } from "./ResponsiveAppBar.style";
 import FadeMenu from "./FadeMenu";
 import { Link as RouterLink } from "react-router-dom";
 import LoginRegisterButtons from "./LoginRegisterButtons";
-
-const subforums = ["Profile", "Account", "Dashboard", "Logout"];
+import useSessionStorageState from "use-session-storage-state";
 
 function ResponsiveAppBar() {
-  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
-    null
-  );
+  const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
+  const [token, setToken] = useSessionStorageState<string | undefined>("token");
+  const [user, setUser] = useSessionStorageState<
+    | {
+        id: number;
+        username: string;
+        created_at: Date;
+        updated_at: Date;
+      }
+    | undefined
+  >("user");
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
   };
 
-  const handleCloseUserMenu = () => {
+  const handleCloseUserMenu = async () => {
     setAnchorElUser(null);
+
+    const backendUrl = process.env.REACT_APP_BACKEND_URL;
+    if (!backendUrl) {
+      console.error("Invalid backend url");
+      return;
+    }
+
+    try {
+      await fetch(`${backendUrl}/users/logout`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          user: {
+            tokens: [token],
+          },
+        }),
+      });
+    } catch (error) {
+      console.error(error);
+    }
+
+    setToken(undefined);
+    setUser(undefined);
   };
 
   return (
@@ -79,12 +111,13 @@ function ResponsiveAppBar() {
 
           {/* Both */}
           <>
-            {false ? (
+            {user ? (
               <>
+                <Typography mr={"1rem"}>{user.username}</Typography>
                 <Tooltip title="Open settings">
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                     <Avatar
-                      alt="Remy Sharp"
+                      alt={user.username}
                       src="/static/images/avatar/2.jpg"
                     />
                   </IconButton>
@@ -105,11 +138,9 @@ function ResponsiveAppBar() {
                   open={Boolean(anchorElUser)}
                   onClose={handleCloseUserMenu}
                 >
-                  {subforums.map((setting) => (
-                    <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                      <Typography textAlign="center">{setting}</Typography>
-                    </MenuItem>
-                  ))}
+                  <MenuItem onClick={handleCloseUserMenu}>
+                    <Typography textAlign="center">Logout</Typography>
+                  </MenuItem>
                 </Menu>
               </>
             ) : (

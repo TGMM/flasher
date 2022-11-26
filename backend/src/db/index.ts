@@ -1,5 +1,5 @@
 import { ParameterizedQuery as PQ } from 'pg-promise';
-import * as pgPromise from 'pg-promise';
+import pgPromise from 'pg-promise';
 import pg from 'pg-promise/typescript/pg-subset';
 import * as dotenv from 'dotenv';
 

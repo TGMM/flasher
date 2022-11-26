@@ -11204,6 +11204,11 @@ url-parse@^1.5.3:
     querystringify "^2.1.1"
     requires-port "^1.0.0"
 
+use-session-storage-state@^18.1.0:
+  version "18.1.0"
+  resolved "https://registry.yarnpkg.com/use-session-storage-state/-/use-session-storage-state-18.1.0.tgz#a5e8cff933c5ffd1ad4648fba3ef47d5b28fdc37"
+  integrity sha512-Dg9lqgW/5VGeYok5/VMoZ3C9vBPJzpYx2r+qeuJ5dw5hMtQSEicATXKqUUJCuVjVRvUeeyNzAyFyVedo7Yg0sg==
+
 util-deprecate@^1.0.1, util-deprecate@^1.0.2, util-deprecate@~1.0.1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/util-deprecate/-/util-deprecate-1.0.2.tgz#450d4dc9fa70de732762fbd2d4a28981419a0ccf"

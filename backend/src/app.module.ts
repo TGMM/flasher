@@ -21,9 +21,6 @@ export class AppModule implements NestModule {
       .forRoutes(
         { path: 'users', method: RequestMethod.PATCH },
         { path: 'users', method: RequestMethod.DELETE },
-        'users/login',
-        'users/logout',
-        'users/logoutAll',
         { path: 'posts', method: RequestMethod.POST },
         { path: 'posts/:id', method: RequestMethod.PATCH },
         { path: 'posts', method: RequestMethod.DELETE },
@@ -38,6 +35,8 @@ export class AppModule implements NestModule {
     consumer
       .apply(AuthMiddlewareCreator(true))
       .forRoutes(
+        'users/logout',
+        'users/logoutAll',
         { path: 'posts', method: RequestMethod.GET },
         { path: 'posts/:id', method: RequestMethod.GET },
         { path: 'posts/:post_id', method: RequestMethod.GET },

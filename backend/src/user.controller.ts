@@ -11,13 +11,13 @@ import {
 } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { query } from './db';
-import jwt from 'jsonwebtoken';
-import bcrypt from 'bcrypt';
 import { User } from './db/db';
 import _ from 'lodash';
 import { updateTableRow } from './db/utils';
 import { AuthRequest, OptionalAuthRequest } from './middleware/auth';
 import * as dotenv from 'dotenv';
+import * as bcrypt from 'bcrypt';
+import * as jwt from 'jsonwebtoken';
 
 dotenv.config();
 
@@ -103,6 +103,7 @@ export class UserController {
         ]);
       } catch (e) {
         res.status(409).send({ error: 'Username is already taken' });
+        return;
       }
 
       if (!rows) {
