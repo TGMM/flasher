@@ -26,7 +26,7 @@ function PostList() {
 
     fetchPosts();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [subforum]);
 
   return (
     <Box display="flex" flexDirection="column">

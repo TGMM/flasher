@@ -10,6 +10,7 @@ import { Box } from "@mui/system";
 import PostList from "./components/PostList";
 import CommentPage from "./components/CommentPage";
 import NewPost from "./components/NewPost";
+import NewSubforum from "./components/NewSubforum";
 
 const darkTheme = createTheme({
   palette: {
@@ -35,6 +36,7 @@ function App() {
                 element={<CommentPage />}
               />
               <Route path="submit" element={<NewPost />} />
+              <Route path="/subforums/create" element={<NewSubforum />} />
             </Routes>
           </Box>
         </Box>

@@ -94,7 +94,7 @@ function ResponsiveAppBar() {
             {user ? (
               <Button
                 component={RouterLink}
-                to="/submit"
+                to="/subforums/create"
                 variant="outlined"
                 disableElevation
                 sx={{

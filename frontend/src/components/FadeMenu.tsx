@@ -45,6 +45,10 @@ export default function FadeMenu() {
   const [subforums, setSubforums] = useState<Subforum[]>([]);
 
   const getButtonPath = () => {
+    if (!pathname.startsWith("/r")) {
+      return "Home";
+    }
+
     const slashSplit = pathname.split("/");
     if (slashSplit.length > 2) {
       return [slashSplit[0], slashSplit[1], slashSplit[2]].join("/");
