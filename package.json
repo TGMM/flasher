@@ -1,0 +1,12 @@
+{
+  "name": "flasher",
+  "version": "1.0.0",
+  "private": true,
+  "repository": "https://github.com/TGMM/flasher.git",
+  "author": "Eliud de León <eliud.deleon.10@gmail.com>",
+  "license": "MIT",
+  "workspaces": [
+    "frontend",
+    "backend"
+  ]
+}
