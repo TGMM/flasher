@@ -20,7 +20,6 @@ export function useHttpRequest(useAuth: boolean = true) {
       token,
       user,
     };
-    console.log(auth);
     return (route: string, method: HttpMethod, body?: object) =>
       createHttpRequest(
         route,

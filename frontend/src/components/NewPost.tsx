@@ -1,40 +1,32 @@
+import React, { useState } from "react";
 import { FormControlLabel, Radio, RadioGroup, Box } from "@mui/material";
-import * as React from "react";
 import NewLinkPost from "./NewLinkPost";
 import NewTextPost from "./NewTextPost";
 
 function NewPost() {
-    const [chooseButton, setChooseButton] = React.useState('Text');
+  const [chosenPostType, setChosenPostType] = useState("Text");
 
-    const handleChangeRadio = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setChooseButton((event.target as HTMLInputElement).value);
-        console.log('dshfjakhjskd' ,chooseButton);        
-      };
+  const handleChangeRadio = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setChosenPostType((event.target as HTMLInputElement).value);
+  };
 
-    const choosenPage = () => {
-      if (chooseButton === "Text") {
-        console.log("fuck you");
-        return <NewTextPost />
-        
-      }else{
-        console.log("nahhh fuck you");
-        return <NewLinkPost/>
-      }
+  const renderChosenPostType = () => {
+    if (chosenPostType === "Text") {
+      return <NewTextPost />;
+    } else {
+      return <NewLinkPost />;
     }
-    
-    return (
-    <Box sx={{padding: "1rem"}}>
-      <RadioGroup
-      row
-      value={chooseButton}
-      onChange={handleChangeRadio }
-    >
+  };
+
+  return (
+    <Box sx={{ padding: "1rem" }}>
+      <RadioGroup row value={chosenPostType} onChange={handleChangeRadio}>
         <FormControlLabel value="Text" control={<Radio />} label="Text post" />
         <FormControlLabel value="Link" control={<Radio />} label="Link" />
       </RadioGroup>
-      {choosenPage()}
-    </Box> 
-    )
+      {renderChosenPostType()}
+    </Box>
+  );
 }
 
 export default NewPost;

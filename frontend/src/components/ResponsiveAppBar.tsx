@@ -16,6 +16,7 @@ import { Link as RouterLink } from "react-router-dom";
 import LoginRegisterButtons from "./LoginRegisterButtons";
 import useSessionStorageState from "use-session-storage-state";
 import { AuthToken, AuthUser, useHttpRequest } from "../fetchUtils";
+import { Button } from "@mui/material";
 
 function ResponsiveAppBar() {
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
@@ -28,9 +29,11 @@ function ResponsiveAppBar() {
     setAnchorElUser(event.currentTarget);
   };
 
-  const handleCloseUserMenu = async () => {
+  const handleCloseUserMenu = () => {
     setAnchorElUser(null);
+  };
 
+  const handleLogout = async () => {
     const backendUrl = process.env.REACT_APP_BACKEND_URL;
     if (!backendUrl) {
       console.error("Invalid backend url");
@@ -45,6 +48,8 @@ function ResponsiveAppBar() {
 
     setToken(undefined);
     setUser(undefined);
+
+    handleCloseUserMenu();
   };
 
   return (
@@ -72,6 +77,19 @@ function ResponsiveAppBar() {
               flasher
             </Typography>
             <FadeMenu></FadeMenu>
+            {user ? (
+              <Button
+                component={RouterLink}
+                to="/submit"
+                variant="outlined"
+                disableElevation
+                sx={{
+                  marginLeft: "1rem",
+                }}
+              >
+                Submit
+              </Button>
+            ) : null}
             <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }} />
           </>
 
@@ -123,7 +141,7 @@ function ResponsiveAppBar() {
                   open={Boolean(anchorElUser)}
                   onClose={handleCloseUserMenu}
                 >
-                  <MenuItem onClick={handleCloseUserMenu}>
+                  <MenuItem onClick={handleLogout}>
                     <Typography textAlign="center">Logout</Typography>
                   </MenuItem>
                 </Menu>

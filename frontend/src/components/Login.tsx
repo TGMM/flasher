@@ -21,7 +21,6 @@ function Login() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(username, password);
 
     const backendUrl = process.env.REACT_APP_BACKEND_URL;
     if (!backendUrl) {

@@ -20,7 +20,6 @@ function PostList() {
 
       if (fetchPostsResponse.ok) {
         const fetchedPosts = await fetchPostsResponse.json();
-        console.log(fetchPosts);
         setPosts(fetchedPosts);
       }
     };
