@@ -4,6 +4,7 @@ import { query } from './db';
 import { ForumPost, Comment } from '../../db';
 import { updateTableRow, userIsModerator } from './db/utils';
 import { AuthRequest, OptionalAuthRequest } from './middleware/auth';
+import { registerEvent, UserEventId } from './eventDashboardUtils';
 
 @Controller({
   path: 'comments',
@@ -124,6 +125,8 @@ export class CommentController {
         id,
       ]);
 
+      registerEvent(req.user, UserEventId.createdComment, ` ${comment.id}`);
+
       res.status(201).send(comment);
     } catch (e) {
       res.status(400).send({ error: e.message });
@@ -160,6 +163,8 @@ export class CommentController {
         ['body'],
         req.body,
       );
+
+      registerEvent(req.user, UserEventId.editedComment, ` ${comment.id}`);
 
       res.send(updatedComment);
     } catch (e) {
@@ -201,6 +206,8 @@ export class CommentController {
       const [deletedComment] = await query<Comment>(setFieldsToNullStatement, [
         id,
       ]);
+
+      registerEvent(req.user, UserEventId.deletedComment, ` ${comment.id}`);
 
       res.send(deletedComment);
     } catch (e) {

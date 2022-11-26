@@ -5,6 +5,7 @@ import { AuthRequest, OptionalAuthRequest } from './middleware/auth';
 import type { ParsedQs } from 'qs';
 import { ForumPost, Subforum } from '../../db';
 import { updateTableRow } from './db/utils';
+import { registerEvent, UserEventId } from './eventDashboardUtils';
 
 @Controller({
   path: 'posts',
@@ -150,6 +151,10 @@ export class ForumPostContoller {
       const createVoteStatement = `insert into post_votes values ($1, $2, $3)`;
       await query(createVoteStatement, [req.user.id, post.id, 1]);
 
+      if (req.user) {
+        registerEvent(req.user, UserEventId.createdPost);
+      }
+
       res.status(201).send(post);
     } catch (e) {
       res.status(400).send({ error: e.message });
@@ -192,6 +197,9 @@ export class ForumPostContoller {
         allowedUpdates,
         req.body,
       );
+
+      registerEvent(req.user, UserEventId.editedPost, ` ${post.id}`);
+
       res.send(updatedPost);
     } catch (e) {
       res.status(400).send({ error: e.message });
@@ -216,10 +224,6 @@ export class ForumPostContoller {
           .send({ error: 'You must be the post creator to delete it' });
       }
 
-      // const deletePostStatement = `delete from posts where id = $1 returning *`
-      // const { rows: [deletedPost] } = await query(deletePostStatement, [id])
-      // res.send(deletedPost)
-
       const setFieldsToNullStatement = `
         update posts
         set title = null,
@@ -230,6 +234,9 @@ export class ForumPostContoller {
       `;
 
       const [deletedPost] = await query(setFieldsToNullStatement, [id]);
+
+      registerEvent(req.user, UserEventId.deletedPost, ` ${post.id}`);
+
       res.send(deletedPost);
     } catch (e) {
       res.status(400).send({ error: e.message });

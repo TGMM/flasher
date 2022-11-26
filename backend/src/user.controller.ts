@@ -18,6 +18,7 @@ import { AuthRequest, OptionalAuthRequest } from './middleware/auth';
 import * as dotenv from 'dotenv';
 import * as bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
+import { registerEvent, UserEventId } from './eventDashboardUtils';
 
 dotenv.config();
 
@@ -31,6 +32,7 @@ export class UserController {
   };
 
   static addToken = async (userid: string) => {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const token = jwt.sign({ id: userid }, process.env.JWT_SECRET!);
 
     const updateUserTokensStatement = `
@@ -144,6 +146,8 @@ export class UserController {
         req.body,
       );
 
+      registerEvent(req.user, UserEventId.editedUser, ` ${user}`);
+
       res.send(UserController.getPublicUser(user));
     } catch (e) {
       res.status(400).send({ error: e.message });
@@ -162,6 +166,9 @@ export class UserController {
           .status(404)
           .send({ error: 'Could not find user with that id' });
       }
+
+      registerEvent(req.user, UserEventId.deletedUser, ` ${user}`);
+
       res.send(UserController.getPublicUser(user));
     } catch (e) {
       res.status(400).send({ error: e.message });
@@ -196,6 +203,8 @@ export class UserController {
         rows[0].id.toString(),
       );
 
+      registerEvent(user, UserEventId.loggedIn);
+
       res.send({
         user: UserController.getPublicUser(user),
         token,
@@ -218,8 +227,15 @@ export class UserController {
       req.user?.id,
     ]);
 
+    if (req.user) {
+      if (req.user) {
+        registerEvent(req.user, UserEventId.loggedIn);
+      }
+    }
+
     delete req.user;
     delete req.token;
+
     res.send(user);
   }
 
@@ -231,6 +247,13 @@ export class UserController {
     where id = $1
   `;
     const [user] = await query(clearUserTokensStatement, [req.user?.id]);
+
+    if (req.user) {
+      if (req.user) {
+        registerEvent(req.user, UserEventId.loggedOutFromAll);
+      }
+    }
+
     delete req.user;
     delete req.token;
     res.send(user);

@@ -3,6 +3,7 @@ import { Request, Response } from 'express';
 import { query } from './db';
 import { Subforum } from '../../db';
 import { AuthRequest } from './middleware/auth';
+import { registerEvent, UserEventId } from './eventDashboardUtils';
 
 @Controller({
   path: 'subforums',
@@ -81,6 +82,10 @@ export class SubForumController {
         req.user.id,
         subforum?.id,
       ]);
+
+      if (subforum) {
+        registerEvent(req.user, UserEventId.createdSubforum, ` ${subforum.id}`);
+      }
 
       res.send(subforum);
     } catch (e) {
