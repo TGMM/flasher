@@ -3,41 +3,55 @@ import { DownvoteIcon, UpvoteIcon } from "./CustomIcons";
 import { orange, blue } from "@mui/material/colors";
 import { HoverArrow, UpvoteCount, WrapperDiv } from "./UpvoteBar.style";
 import { useState } from "react";
+import { useHttpRequest } from "../fetchUtils";
 
 export interface UpvoteBarProps {
   numberOfVotes: number;
   hasVoted: -1 | 0 | 1 | undefined;
+  voteType: "comment" | "post";
+  itemId: number;
 }
 
 function UpvoteBar(props: UpvoteBarProps) {
-  const { numberOfVotes, hasVoted } = props;
-
-  const upvoteColor = orange[500];
-  const downvoteColor = blue[500];
-
-  const handleVote = (isUpvote: boolean) => {
-    if (isUpvote && currentVote !== 1) {
-      setVoteCount(voteCount - currentVote + 1);
-      setCurrentVote(1);
-    } else if (!isUpvote && currentVote !== -1) {
-      setVoteCount(voteCount - currentVote - 1);
-      setCurrentVote(-1);
-    } else if (isUpvote) {
-      setVoteCount(voteCount - 1);
-      setCurrentVote(0);
-    } else if (!isUpvote) {
-      setVoteCount(voteCount + 1);
-      setCurrentVote(0);
-    }
-  };
+  const { numberOfVotes, hasVoted, voteType, itemId } = props;
+  const initialVotes = numberOfVotes - (hasVoted ?? 0);
 
   const [voteCount, setVoteCount] = useState(numberOfVotes);
   const [currentVote, setCurrentVote] = useState(hasVoted ?? 0);
 
+  const httpRequest = useHttpRequest();
+
+  const upvoteColor = orange[500];
+  const downvoteColor = blue[500];
+
+  const handleVote = async (val: -1 | 0 | 1) => {
+    if (currentVote === val) {
+      val = 0;
+    }
+
+    await submitVoteValue(val);
+  };
+
+  const submitVoteValue = async (voteValue: -1 | 0 | 1) => {
+    const response = await httpRequest(`/votes/${voteType}`, "POST", {
+      item_id: itemId,
+      vote_value: voteValue,
+    });
+
+    const data = await response.json();
+    if (response.ok) {
+      const newVoteValue = data.vote_value;
+      setCurrentVote(newVoteValue);
+      setVoteCount(initialVotes + newVoteValue);
+    } else {
+      alert("Error submitting vote");
+    }
+  };
+
   return (
     <div className={WrapperDiv}>
       <UpvoteIcon
-        onClick={() => handleVote(true)}
+        onClick={() => handleVote(1)}
         sx={{
           color: currentVote === 1 ? upvoteColor : undefined,
         }}
@@ -45,7 +59,7 @@ function UpvoteBar(props: UpvoteBarProps) {
       />
       <Typography className={`${UpvoteCount}`}>{voteCount}</Typography>
       <DownvoteIcon
-        onClick={() => handleVote(false)}
+        onClick={() => handleVote(-1)}
         sx={{
           color: currentVote === -1 ? downvoteColor : undefined,
         }}

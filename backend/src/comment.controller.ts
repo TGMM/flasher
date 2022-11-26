@@ -190,9 +190,6 @@ export class CommentController {
           .send({ error: 'You must be the comment author to delete it' });
       }
 
-      // const deleteCommentStatement = `delete from comments where id = $1 returning *`
-      // const { rows: [deletedComment] } = await query(deleteCommentStatement, [id])
-
       const setFieldsToNullStatement = `
         update comments
         set body = null,

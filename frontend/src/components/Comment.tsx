@@ -5,6 +5,7 @@ import { Link as RouterLink } from "react-router-dom";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { PublicComment } from "../../../db";
+import UpvoteBar from "./UpvoteBar";
 dayjs.extend(relativeTime);
 
 interface CommentProps {
@@ -13,7 +14,7 @@ interface CommentProps {
 
 function CommentC(props: CommentProps) {
   const { commentInfo } = props;
-  const { author_name, created_at, body } = commentInfo;
+  const { author_name, created_at, body, id: commentId } = commentInfo;
 
   return (
     <Card
@@ -28,7 +29,12 @@ function CommentC(props: CommentProps) {
         }}
       >
         <Box display="flex" marginRight="1.2rem">
-          {/* <UpvoteBar /> */}
+          <UpvoteBar
+            hasVoted={commentInfo.has_voted}
+            numberOfVotes={commentInfo.votes}
+            voteType="comment"
+            itemId={commentId}
+          />
         </Box>
         <Box>
           <Typography

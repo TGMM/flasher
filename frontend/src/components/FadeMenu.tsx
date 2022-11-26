@@ -40,6 +40,7 @@ export default function FadeMenu() {
     };
 
     fetchSubforums();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const [subforums, setSubforums] = useState<Subforum[]>([]);

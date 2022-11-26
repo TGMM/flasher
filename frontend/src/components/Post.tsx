@@ -52,7 +52,12 @@ function Post(props: PostProps) {
         }}
       >
         <Box display="flex" marginRight="1.2rem">
-          <UpvoteBar hasVoted={hasVoted} numberOfVotes={numberOfVotes} />
+          <UpvoteBar
+            hasVoted={hasVoted}
+            numberOfVotes={numberOfVotes}
+            voteType="post"
+            itemId={postId}
+          />
         </Box>
         <Box>
           <Typography
