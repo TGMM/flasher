@@ -121,7 +121,7 @@ export class ForumPostContoller {
         throw new Error('Must specify subforum');
       }
 
-      const selectSubredditIdStatement = `select * from subforums where name = $1`;
+      const selectSubredditIdStatement = `select * from subreddits where name = $1`;
 
       const [foundSubreddit] = await query<Subforum>(
         selectSubredditIdStatement,

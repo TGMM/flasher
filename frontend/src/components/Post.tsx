@@ -13,6 +13,8 @@ export interface PostInfo {
   title: string;
   body: string;
   numComments: number;
+  numberOfVotes: number;
+  hasVoted: -1 | 0 | 1 | undefined;
 }
 
 interface PostProps {
@@ -22,8 +24,16 @@ interface PostProps {
 
 function Post(props: PostProps) {
   dayjs.extend(relativeTime);
-  const { body, subforum, author, title, createdAt, numComments } =
-    props.postInfo;
+  const {
+    body,
+    subforum,
+    author,
+    title,
+    createdAt,
+    numComments,
+    hasVoted,
+    numberOfVotes,
+  } = props.postInfo;
   const extraSx = props.sx;
 
   return (
@@ -40,7 +50,7 @@ function Post(props: PostProps) {
         }}
       >
         <Box display="flex" marginRight="1.2rem">
-          <UpvoteBar />
+          <UpvoteBar hasVoted={hasVoted} numberOfVotes={numberOfVotes} />
         </Box>
         <Box>
           <Typography
@@ -86,7 +96,7 @@ function Post(props: PostProps) {
                 textDecoration: "none",
               }}
               component={RouterLink}
-              to={`/${subforum}/comments/${1}`}
+              to={`/r/${subforum}/comments/${1}`}
             >
               {`${numComments} comments`}
             </Typography>

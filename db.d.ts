@@ -31,6 +31,20 @@ export interface ForumPost {
   updated_at: Date;
 }
 
+export interface PublicForumPost {
+  id: number;
+  type: string;
+  title: string;
+  body: string;
+  created_at: Date;
+  updated_at: Date;
+  votes: number;
+  has_voted?: any;
+  number_of_comments: number;
+  author_name: string;
+  subreddit_name: string;
+}
+
 export interface Comment {
   id: number;
   body: string;

@@ -41,7 +41,10 @@ export class SubForumController {
   @Post()
   async createForum(@Req() req: AuthRequest, @Res() res: Response) {
     try {
-      const { name, description } = req.body;
+      const { name, description } = req.body as {
+        name: string;
+        description: string;
+      };
 
       const nameRegex = new RegExp('^[a-z0-9]+$', 'i');
 
@@ -60,7 +63,7 @@ export class SubForumController {
       let subforum;
       try {
         [subforum] = await query<Subforum>(insertSubforumStatement, [
-          name,
+          name.toLowerCase(),
           description,
         ]);
       } catch (e) {

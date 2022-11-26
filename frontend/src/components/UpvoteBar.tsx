@@ -4,7 +4,14 @@ import { orange, blue } from "@mui/material/colors";
 import { HoverArrow, UpvoteCount, WrapperDiv } from "./UpvoteBar.style";
 import { useState } from "react";
 
-function UpvoteBar() {
+export interface UpvoteBarProps {
+  numberOfVotes: number;
+  hasVoted: -1 | 0 | 1 | undefined;
+}
+
+function UpvoteBar(props: UpvoteBarProps) {
+  const { numberOfVotes, hasVoted } = props;
+
   const upvoteColor = orange[500];
   const downvoteColor = blue[500];
 
@@ -24,8 +31,8 @@ function UpvoteBar() {
     }
   };
 
-  const [voteCount, setVoteCount] = useState(Math.floor(Math.random() * 100));
-  const [currentVote, setCurrentVote] = useState(0);
+  const [voteCount, setVoteCount] = useState(numberOfVotes);
+  const [currentVote, setCurrentVote] = useState(hasVoted ?? 0);
 
   return (
     <div className={WrapperDiv}>

@@ -1,8 +1,10 @@
-import { Typography } from "@mui/material";
+import { CircularProgress, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import dayjs from "dayjs";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { templatePostInfo } from "../mockUtils";
+import type { PublicForumPost } from "../../../db";
+import { useHttpRequest } from "../fetchUtils";
 import Comment from "./Comment";
 import { fontFamily } from "./Global.style";
 import LoginRegisterButtons from "./LoginRegisterButtons";
@@ -10,6 +12,19 @@ import Post from "./Post";
 
 function CommentPage() {
   const { subforum, id } = useParams();
+  const httpRequest = useHttpRequest();
+  const [post, setPost] = useState<PublicForumPost | undefined>();
+
+  useEffect(() => {
+    const fetchPost = async () => {
+      const response = await httpRequest(`/posts/${id}`, "GET");
+      if (response.ok) {
+        const fetchedPost = (await response.json()) as PublicForumPost;
+        setPost(fetchedPost);
+      }
+    };
+    fetchPost();
+  }, []);
 
   return (
     <Box
@@ -17,7 +32,22 @@ function CommentPage() {
         marginTop: "1rem",
       }}
     >
-      <Post postInfo={templatePostInfo(subforum)} />
+      {post ? (
+        <Post
+          postInfo={{
+            title: post.title,
+            author: post.author_name,
+            body: post.body,
+            createdAt: dayjs(post.created_at),
+            hasVoted: post.has_voted,
+            numberOfVotes: post.votes,
+            numComments: post.number_of_comments,
+            subforum: post.subreddit_name,
+          }}
+        />
+      ) : (
+        <CircularProgress />
+      )}
       <Box
         sx={{
           height: "8rem",

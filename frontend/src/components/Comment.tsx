@@ -33,7 +33,7 @@ function Comment(props: CommentProps) {
         }}
       >
         <Box display="flex" marginRight="1.2rem">
-          <UpvoteBar />
+          {/* <UpvoteBar /> */}
         </Box>
         <Box>
           <Typography
