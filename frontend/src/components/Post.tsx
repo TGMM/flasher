@@ -7,6 +7,7 @@ import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 
 export interface PostInfo {
+  id: number;
   subforum: string;
   author: string;
   createdAt: dayjs.Dayjs;
@@ -25,6 +26,7 @@ interface PostProps {
 function Post(props: PostProps) {
   dayjs.extend(relativeTime);
   const {
+    id: postId,
     body,
     subforum,
     author,
@@ -96,7 +98,7 @@ function Post(props: PostProps) {
                 textDecoration: "none",
               }}
               component={RouterLink}
-              to={`/r/${subforum}/comments/${1}`}
+              to={`/r/${subforum}/comments/${postId}`}
             >
               {`${numComments} comments`}
             </Typography>

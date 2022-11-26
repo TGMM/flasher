@@ -43,6 +43,7 @@ function PostList() {
       {posts.map((p) => (
         <Post
           postInfo={{
+            id: p.id,
             author: p.author_name,
             body: p.body,
             createdAt: dayjs(p.created_at),

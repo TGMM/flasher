@@ -35,6 +35,7 @@ function CommentPage() {
       {post ? (
         <Post
           postInfo={{
+            id: post.id,
             title: post.title,
             author: post.author_name,
             body: post.body,
