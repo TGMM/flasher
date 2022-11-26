@@ -91,6 +91,19 @@ function ResponsiveAppBar() {
               </Button>
             ) : null}
             <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }} />
+            {user ? (
+              <Button
+                component={RouterLink}
+                to="/submit"
+                variant="outlined"
+                disableElevation
+                sx={{
+                  marginRight: "1rem",
+                }}
+              >
+                Create subreddit
+              </Button>
+            ) : null}
           </>
 
           {/* Mobile */}

@@ -1,24 +1,19 @@
 import { Box, Button, Card, Typography } from "@mui/material";
 import { CommentIcon } from "./CustomIcons";
 import { fontFamily } from "./Global.style";
-import UpvoteBar from "./UpvoteBar";
 import { Link as RouterLink } from "react-router-dom";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-
-export interface CommentInfo {
-  author: string;
-  createdAt: dayjs.Dayjs;
-  body: string;
-}
+import { PublicComment } from "../../../db";
+dayjs.extend(relativeTime);
 
 interface CommentProps {
-  commentInfo: CommentInfo;
+  commentInfo: PublicComment;
 }
 
-function Comment(props: CommentProps) {
-  dayjs.extend(relativeTime);
-  const { body, author, createdAt } = props.commentInfo;
+function CommentC(props: CommentProps) {
+  const { commentInfo } = props;
+  const { author_name, created_at, body } = commentInfo;
 
   return (
     <Card
@@ -41,7 +36,7 @@ function Comment(props: CommentProps) {
               fontFamily: fontFamily,
             }}
           >
-            {`${author} ${createdAt.fromNow()}`}
+            {`${author_name} ${dayjs(created_at).fromNow()}`}
           </Typography>
           <Typography
             sx={{
@@ -79,4 +74,4 @@ function Comment(props: CommentProps) {
   );
 }
 
-export default Comment;
+export default CommentC;

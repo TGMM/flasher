@@ -10,10 +10,10 @@ import { AuthRequest, OptionalAuthRequest } from './middleware/auth';
 })
 export class CommentController {
   static selectCommentStatement = `
-    select c.id, c.author_id, c.post_id, c.parent_comment_id, sr.name subforum_name
+    select c.id, c.author_id, c.post_id, c.parent_comment_id, sr.name subreddit_name
     from comments c
     inner join posts p on c.post_id = p.id
-    inner join subforums sr on p.subforum_id = sr.id
+    inner join subreddits sr on p.subreddit_id = sr.id
     where c.id = $1
   `;
 
@@ -51,10 +51,10 @@ export class CommentController {
         max(u.username) author_name,
         cast(coalesce(sum(pv.vote_value), 0) as int) votes,
         max(upv.vote_value) has_voted,
-        max(sr.name) subforum_name
+        max(sr.name) subreddit_name
         from posts p
         left join users u on p.author_id = u.id
-        inner join subforums sr on p.subforum_id = sr.id
+        inner join subreddits sr on p.subreddit_id = sr.id
         left join post_votes pv on p.id = pv.post_id
         left join post_votes upv on upv.post_id = p.id and upv.user_id = $1
         group by p.id
@@ -146,7 +146,7 @@ export class CommentController {
       }
       if (
         comment.author_id !== req.user.id &&
-        (await userIsModerator(req.user.username, comment.subforum_name)) ===
+        (await userIsModerator(req.user.username, comment.subreddit_name)) ===
           false
       ) {
         return res
@@ -182,7 +182,7 @@ export class CommentController {
       }
       if (
         comment.author_id !== req.user.id &&
-        (await userIsModerator(req.user.username, comment.subforum_name)) ===
+        (await userIsModerator(req.user.username, comment.subreddit_name)) ===
           false
       ) {
         return res

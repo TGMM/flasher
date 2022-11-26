@@ -54,7 +54,19 @@ export interface Comment {
   created_at: Date;
   updated_at: Date;
   // TODO: Check this
-  subforum_name: string;
+  subreddit_name: string;
+}
+
+export interface PublicComment {
+  id: number;
+  body: string;
+  post_id: number;
+  parent_comment_id?: any;
+  created_at: Date;
+  updated_at: Date;
+  author_name: string;
+  votes: number;
+  has_voted?: any;
 }
 
 export interface Vote {

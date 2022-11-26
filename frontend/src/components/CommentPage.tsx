@@ -3,28 +3,43 @@ import Box from "@mui/material/Box";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import type { PublicForumPost } from "../../../db";
+import type { PublicComment, PublicForumPost } from "../../../db";
 import { useHttpRequest } from "../fetchUtils";
-import Comment from "./Comment";
+import CommentC from "./Comment";
 import { fontFamily } from "./Global.style";
 import LoginRegisterButtons from "./LoginRegisterButtons";
 import Post from "./Post";
 
+interface PostCommentData {
+  post: PublicForumPost;
+  comments: PublicComment[];
+}
+
 function CommentPage() {
-  const { subforum, id } = useParams();
+  const { id } = useParams();
+  const postId = id;
+
   const httpRequest = useHttpRequest();
-  const [post, setPost] = useState<PublicForumPost | undefined>();
+  const [postComments, setPostComments] = useState<PostCommentData>();
 
   useEffect(() => {
-    const fetchPost = async () => {
-      const response = await httpRequest(`/posts/${id}`, "GET");
-      if (response.ok) {
-        const fetchedPost = (await response.json()) as PublicForumPost;
-        setPost(fetchedPost);
+    const fetchPosts = async () => {
+      const route = `/comments/${postId}`;
+      const fetchPostCommentsResponse = await httpRequest(route, "GET");
+
+      if (fetchPostCommentsResponse.ok) {
+        const fetchedPostComments =
+          (await fetchPostCommentsResponse.json()) as PostCommentData;
+        setPostComments(fetchedPostComments);
       }
     };
-    fetchPost();
+
+    fetchPosts();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const post = postComments?.post;
+  const comments = postComments?.comments;
 
   return (
     <Box
@@ -42,7 +57,7 @@ function CommentPage() {
             createdAt: dayjs(post.created_at),
             hasVoted: post.has_voted,
             numberOfVotes: post.votes,
-            numComments: post.number_of_comments,
+            numComments: comments?.length ?? 0,
             subforum: post.subreddit_name,
           }}
         />
@@ -82,13 +97,9 @@ function CommentPage() {
           <LoginRegisterButtons />
         </Box>
       </Box>
-      <Comment
-        commentInfo={{
-          author: "Author",
-          body: "This is a comment!",
-          createdAt: dayjs(Date.now()),
-        }}
-      />
+      {comments?.map((comment) => (
+        <CommentC commentInfo={comment} />
+      ))}
     </Box>
   );
 }
